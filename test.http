@@ -1,0 +1,6 @@
+POST http://localhost:7071/api/HttpExample1
+
+{
+    "msg" : "東京で美味しいラーメン店を教えて下さい。",
+    "id" : "17C4C12B-97F3-4FA2-AB69-D14FD38E3FE4"
+}

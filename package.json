@@ -1,0 +1,30 @@
+{
+  "name": "openai-to-cosmos-langchain-if",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/src/functions/*.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "ts-esm": "node --loader ts-node/esm",
+    "watch": "tsc -w",
+    "clean": "rimraf dist",
+    "prestart": "npm run clean && npm run build",
+    "start": "func start",
+    "test": "echo \"No tests yet...\""
+  },
+  "dependencies": {
+    "@azure/functions": "^4.0.0-alpha.9",
+    "dotenv": "^16.1.3",
+    "langchain": "^0.0.88",
+    "openai": "^3.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.2.5",
+    "azure-functions-core-tools": "^4.x",
+    "rimraf": "^5.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.3"
+  },
+  "license": "MIT"
+}
