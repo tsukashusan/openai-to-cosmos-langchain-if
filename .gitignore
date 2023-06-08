@@ -47,6 +47,16 @@ __blobstorage__
 __queuestorage__
 __azurite_db*__.json
 
+# yarn (using Zero-Installs)
+.yarn/*
+#!.yarn/cache
+#!.yarn/patches
+#!.yarn/plugins
+#!.yarn/releases
+#!.yarn/sdks
+#!.yarn/versions
 
 package-lock.json
 yarn.lock
+yarn-error.log
+deploy.ps1

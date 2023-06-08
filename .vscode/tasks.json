@@ -12,26 +12,26 @@
 		{
 			"type": "shell",
 			"label": "npm build (functions)",
-			"command": "npm run build",
+			"command": "yarn build",
 			"dependsOn": "npm clean (functions)",
 			"problemMatcher": "$tsc"
 		},
 		{
 			"type": "shell",
 			"label": "npm install (functions)",
-			"command": "npm install"
+			"command": "yarn set version berry;yarn install"
 		},
 		{
 			"type": "shell",
 			"label": "npm prune (functions)",
-			"command": "npm prune --production",
+			"command": "yarn workspaces focus --all --production",
 			"dependsOn": "npm build (functions)",
 			"problemMatcher": []
 		},
 		{
 			"type": "shell",
 			"label": "npm clean (functions)",
-			"command": "npm run clean",
+			"command": "yarn run clean",
 			"dependsOn": "npm install (functions)"
 		}
 	]

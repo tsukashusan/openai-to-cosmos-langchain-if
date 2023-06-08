@@ -1,6 +1,46 @@
-POST http://localhost:7071/api/HttpExample1
+@remoteHost = deploy-test4node.azurewebsites.net
+@remotePort = 443
+@localHost = localhost
+@localPort = 7071
+
+###
+POST /api/HttpExampleLangChain?code=T1t-mLQmW3wMIO8SyiwMWMYiLnE6LdkZSulln_f2k8gZAzFu4TIJlw==
+Host: {{remoteHost}}:{{remotePort}}
+content-type: application/json
+Accept: application/json
 
 {
-    "msg" : "東京で美味しいラーメン店を教えて下さい。",
+    "message" : "日本マイクロソフト株式会社の社長と就任日をおしえてください。",
     "id" : "17C4C12B-97F3-4FA2-AB69-D14FD38E3FE4"
+}
+###
+POST /api/HttpExampleLangChain?code=T1t-mLQmW3wMIO8SyiwMWMYiLnE6LdkZSulln_f2k8gZAzFu4TIJlw==
+Host: {{remoteHost}}:{{remotePort}}
+content-type: application/json
+Accept: application/json
+
+{
+    "id" : "17C4C12B-97F3-4FA2-AB69-D14FD38E3FE4",
+    "message" : "#命令書:\nあなたは、有名なYouTuberです。\n以下の制約条件と入力文をもとに、 最高のYouTube向けタイトルを出力してください。\n\n#制約条件:\n・文字数は50文字程度。\n・中学生にもわかりやすく。\n・重要なキーワードを取り残さない。\n・文章を簡潔に。\n\n#入力文:\n広がってくれるのでよくとれる。\n歯医者でも使ってるフロス。\nコスパ良く使えました。\nコスパ良く使えました。\n歯科医師の子供も勧める商品です。\n芸能人が動画でおすすめしていたり。\n家族からも勧められて購入。\n周りからの評価が高い。\n\n#出力文:\n"
+}
+###
+POST /api/HttpExampleLangChain
+Host: {{localHost}}:{{localPort}}
+content-type: application/json
+Accept: application/json
+
+{
+    "message" : "明後日の気温と湿度を教えてください。",
+    "id" : "17C4C12B-97F3-4FA2-AB69-D14FD38E3FE4"
+}
+
+###
+POST /api/HttpExamplePlain
+Host: {{localHost}}:{{localPort}}
+content-type: application/json
+Accept: application/json
+
+{
+    "id" : "17C4C12B-97F3-4FA2-AB69-D14FD38E3FE4",
+    "message" : "#命令書:\nあなたは、有名なYouTuberです。\n以下の制約条件と入力文をもとに、 最高のYouTube向けタイトルを出力してください。\n\n#制約条件:\n・文字数は50文字程度。\n・中学生にもわかりやすく。\n・重要なキーワードを取り残さない。\n・文章を簡潔に。\n\n#入力文:\n広がってくれるのでよくとれる。\n歯医者でも使ってるフロス。\nコスパ良く使えました。\nコスパ良く使えました。\n歯科医師の子供も勧める商品です。\n芸能人が動画でおすすめしていたり。\n家族からも勧められて購入。\n周りからの評価が高い。\n\n#出力文:\n"
 }
