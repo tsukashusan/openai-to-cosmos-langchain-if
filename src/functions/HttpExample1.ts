@@ -27,8 +27,6 @@ const cosmosDBOut = output.generic(
     }
 );
 
-const textencode = new TextEncoder();
-
 export async function HttpExamplePlain(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     context.log(`Http function processed request for url "${request.url}"`);
     const aoai : openaiif = new openaiif(process.env.GPT_SYSTEM_SETTING);
