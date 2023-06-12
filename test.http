@@ -44,3 +44,14 @@ Accept: application/json
     "id" : "17C4C12B-97F3-4FA2-AB69-D14FD38E3FE4",
     "message" : "#命令書:\nあなたは、有名なYouTuberです。\n以下の制約条件と入力文をもとに、 最高のYouTube向けタイトルを出力してください。\n\n#制約条件:\n・文字数は50文字程度。\n・中学生にもわかりやすく。\n・重要なキーワードを取り残さない。\n・文章を簡潔に。\n\n#入力文:\n広がってくれるのでよくとれる。\n歯医者でも使ってるフロス。\nコスパ良く使えました。\nコスパ良く使えました。\n歯科医師の子供も勧める商品です。\n芸能人が動画でおすすめしていたり。\n家族からも勧められて購入。\n周りからの評価が高い。\n\n#出力文:\n"
 }
+
+###
+POST /api/HttpExampleLangChainSQL
+Host: {{localHost}}:{{localPort}}
+content-type: application/json
+Accept: application/json
+
+{
+    "id" : "17C4C12B-97F3-4FA2-AB69-D14FD38E3FE4",
+    "message" : "仕入先の合計件数をおしえてください。"
+}

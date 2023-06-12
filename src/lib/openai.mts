@@ -6,6 +6,11 @@ import { ChatPromptTemplate, PromptTemplate, SystemMessagePromptTemplate, HumanM
 import { BingSerpAPI, Tool } from "langchain/tools";
 import { Calculator } from "langchain/tools/calculator";
 import { LLMChain } from "langchain/chains";
+import { DataSource } from "typeorm";
+import { OpenAI } from "langchain/llms/openai";
+import { SqlDatabase } from "langchain/sql_db";
+import { SqlDatabaseChain } from "langchain/chains";
+import { ChainValues } from "langchain/schema"
 
 export class openaiif {
     private readonly chat: ChatOpenAI;
@@ -79,5 +84,42 @@ export class openaiif {
         } else {
             return await this.reqeustUsingLangChain(message);
         }
+    }
+
+    public async reqeustUsingLangChainSQL(message: string): Promise<ChainValues> {
+        const datasource = new DataSource({
+            type: "mssql",
+            host : process.env.MS_SQL_HOST,
+            port : Number(process.env.MS_SQL_PORT),
+            username : process.env.MS_SQL_USERNAME,
+            password : process.env.MS_SQL_PASSWORD,
+            database : process.env.MS_SQL_DATABASE
+          });
+
+          const db = await SqlDatabase.fromDataSourceParams({
+            appDataSource: datasource,
+            includesTables: process.env.MS_SQL_INCLUDE_TABLE.split(',')
+            //ignoreTables: ['database_firewall_rules']
+          });
+
+          const chain = new SqlDatabaseChain({
+            llm: new OpenAI({
+                temperature: 0.9,
+                azureOpenAIApiKey: process.env.AZURE_OPENAI_API_KEY,
+                azureOpenAIApiInstanceName: process.env.AZURE_OPENAI_API_INSTANCE_NAME,
+                azureOpenAIApiDeploymentName: process.env.AZURE_OPENAI_API_DEPLOYMENT_NAME,
+                azureOpenAIApiVersion: process.env.AZURE_OPENAI_API_VERSION}),
+            database: db,
+            verbose : true
+          });
+          
+          const res = await chain.call({ query: message });
+          /* Expected result:
+           * {
+           *   result: ' There are 3503 tracks.',
+           *   sql: ' SELECT COUNT(*) FROM "Track";'
+           * }
+           */
+          return res;
     }
 }

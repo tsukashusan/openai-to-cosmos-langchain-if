@@ -50,6 +50,22 @@ export async function HttpExampleLangChain(request: HttpRequest, context: Invoca
     var a = context.extraInputs.get(cosmosDBIn);
     console.log(a);
     context.extraOutputs.set(cosmosDBOut, JSON.stringify(rjson))
+    console.log(r)
+    return {
+        jsonBody : {message : r}
+    };
+};
+
+export async function HttpExampleLangChainSQL(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+    context.log(`Http function processed request for url "${request.url}"`);
+    const aoai : openaiif = new openaiif(process.env.GPT_SYSTEM_SETTING);
+    const reqText : requestMessage = JSON.parse(await request.text());
+    const r = await aoai.reqeustUsingLangChainSQL(reqText.message);
+    const rjson = {id : uuidv4(), userid: reqText.id, message : r};
+    //var a = context.extraInputs.get(cosmosDBIn);
+    //console.log(a);
+    //context.extraOutputs.set(cosmosDBOut, JSON.stringify(rjson))
+    console.log(r)
     return {
         jsonBody : {message : r}
     };
@@ -79,4 +95,17 @@ app.generic('HttpExampleLangChain', {
         type: 'http'
     }),
     handler: HttpExampleLangChain
+});
+
+app.generic('HttpExampleLangChainSQL', {
+    trigger: trigger.generic({
+        type: 'httpTrigger',
+        methods: ['POST']
+    }),
+    extraInputs :  [cosmosDBIn],
+    extraOutputs : [cosmosDBOut],
+    return: output.generic({
+        type: 'http'
+    }),
+    handler: HttpExampleLangChainSQL
 });
