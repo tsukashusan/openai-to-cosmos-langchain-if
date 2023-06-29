@@ -97,7 +97,7 @@ app.generic('HttpExampleLangChain', {
     handler: HttpExampleLangChain
 });
 
-app.generic('HttpExampleLangChainSQL', {
+app.generic('langsql', {
     trigger: trigger.generic({
         type: 'httpTrigger',
         methods: ['POST']

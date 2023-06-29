@@ -1,9 +1,10 @@
-@remoteHost = deploy-test4node.azurewebsites.net
+@remoteHost = remoteHost
+#@remoteHost = deploy-test4node.azurewebsites.net
 @remotePort = 443
 @localHost = localhost
 @localPort = 7071
+@accessKey = accessKey
 
-###
 POST /api/HttpExampleLangChain?code=T1t-mLQmW3wMIO8SyiwMWMYiLnE6LdkZSulln_f2k8gZAzFu4TIJlw==
 Host: {{remoteHost}}:{{remotePort}}
 content-type: application/json
@@ -48,6 +49,17 @@ Accept: application/json
 ###
 POST /api/HttpExampleLangChainSQL
 Host: {{localHost}}:{{localPort}}
+content-type: application/json
+Accept: application/json
+
+{
+    "id" : "17C4C12B-97F3-4FA2-AB69-D14FD38E3FE4",
+    "message" : "仕入先の合計件数をおしえてください。"
+}
+
+###
+POST /api/langsql?code={{accessKey}}
+Host: {{remoteHost}}:{{remotePort}}
 content-type: application/json
 Accept: application/json
 

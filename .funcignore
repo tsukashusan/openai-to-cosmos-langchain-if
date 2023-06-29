@@ -8,3 +8,16 @@ getting_started.md
 node_modules/@types/
 node_modules/azure-functions-core-tools/
 node_modules/typescript/
+.env
+.yarnrc.yml
+__azurite*
+_deploy.ps1
+_host.json
+.funcignore
+README.markdown
+yarn-error.log
+*.http
+*ps1
+__blobstorage__
+.yarn
+yarn.lock

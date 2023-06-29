@@ -60,3 +60,4 @@ package-lock.json
 yarn.lock
 yarn-error.log
 deploy.ps1
+test.http
