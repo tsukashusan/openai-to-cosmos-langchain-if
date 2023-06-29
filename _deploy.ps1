@@ -38,4 +38,20 @@ az webapp config appsettings set --resource-group $resourceGroupName --name $fun
 az webapp config appsettings set --resource-group $resourceGroupName --name $functionName --settings AzureWebJobsFeatureFlags="EnableWorkerIndexing"
 az webapp config appsettings set --resource-group $resourceGroupName --name $functionName --settings WEBSITE_RUN_FROM_PACKAGE="1"
 
+#$jsfiles = Get-ChildItem -Path ./* -Include .\src, .\host.json, .\.funcignore, .\package.json -Verbose
+
+#$excludeItems = @()
+#$f = (Get-Content ".\.funcignore") -as [string[]]
+#foreach ($l in $f) {
+#    $excludeItems += ${l}
+#}
+#$excludeItems = $excludeItems.trim()
+#$jsfiles = Get-ChildItem -Path .\*  -Exclude $excludeItems
+#Compress-Archive -Path $jsfiles ..\openai-to-cosmos-langchain-if.zip -Force
+#7z.exe a ..\openai-to-cosmos-langchain-if.zip  "${excludeItems}"
+#$jsfiles = Get-ChildItem -Path * -Exclude _*, .vscode, .yarn, .*, *ps1, local*, package-lock.json, README*, *http, yarn-error.log, yarn.lock
+
+#Compress-Archive -Path $jsfiles ..\openai-to-cosmos-langchain-if.zip -Force
+
+#az functionapp deployment source config-zip --resource-group $resourceGroupName --name $functionName --src ..\openai-to-cosmos-langchain-if.zip --build-remote true --verbose
 func azure functionapp publish $functionName
