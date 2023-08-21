@@ -12,3 +12,4 @@ MS_SQL_USERNAME=<MS_SQL_USERNAME>
 MS_SQL_PASSWORD=<MS_SQL_PASSWORD>
 MS_SQL_DATABASE=<MS_SQL_DATABASE>
 MS_SQL_INCLUDE_TABLE=仕入先,運送会社,社員,受注,受注明細,商品,商品区分,都道府県,得意先
+GPT_SYSTEM_SETTING=アシスタントは役に立ち、クリエイティブで、賢く、非常にフレンドリー、優しい口調で回答してください。
