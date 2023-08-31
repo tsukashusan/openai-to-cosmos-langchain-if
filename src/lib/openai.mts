@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import { ChatOpenAI } from "langchain/chat_models/openai";
-import { BaseChatMessage, HumanChatMessage, SystemChatMessage } from "langchain/schema"
+import { BaseMessage, HumanMessage, SystemMessage } from "langchain/schema"
 import { AgentExecutor, ZeroShotAgent, Agent } from "langchain/agents";
 import { ChatPromptTemplate, PromptTemplate, SystemMessagePromptTemplate, HumanMessagePromptTemplate } from "langchain/prompts";
 import { BingSerpAPI, Tool } from "langchain/tools";
@@ -14,7 +14,7 @@ import { ChainValues } from "langchain/schema"
 
 export class openaiif {
     private readonly chat: ChatOpenAI;
-    private readonly systemChatMessage: SystemChatMessage;
+    private readonly systemMessage: SystemMessage;
     private readonly tools: Tool[];
     private readonly prompt: PromptTemplate;
     private executor: AgentExecutor = null;
@@ -22,9 +22,13 @@ export class openaiif {
     private readonly agent: Agent;
     constructor(system_setting: string) {
         this.chat = new ChatOpenAI({
-            temperature: 0.9,
+            temperature: 1,
+            maxTokens: 256,
+            topP: 0,
+            frequencyPenalty: 0,
+            presencePenalty: 0
         });
-        this.systemChatMessage = new SystemChatMessage(system_setting)
+        this.systemMessage = new SystemMessage(system_setting)
         this.tools = [
             new BingSerpAPI(process.env.BING_API_KEY, { setLang: "JP" }),
             new Calculator(),
@@ -50,16 +54,16 @@ export class openaiif {
         });
     }
 
-    private async reqeustUsingLangChain(message: string): Promise<BaseChatMessage> {
-        var array: Array<BaseChatMessage> = [this.systemChatMessage, new HumanChatMessage(message)];
+    private async reqeustUsingLangChain(message: string): Promise<BaseMessage> {
+        var array: Array<BaseMessage> = [this.systemMessage, new HumanMessage(message)];
         var ret = await this.chat.call(array);
         return ret;
     }
 
     public async reqeustUsingLangChainToolBing(input: string): Promise<string> {
         if (input.match(/#.+\n/)) {
-            const messageArray : Array<string> = input.split('#');
-            if (0 == messageArray[0].trim().length && 4 < messageArray.length ) {
+            const messageArray: Array<string> = input.split('#');
+            if (0 == messageArray[0].trim().length && 4 < messageArray.length) {
                 return (await this.reqeustUsingLangChainPlain(input)).text;
             }
         }
@@ -71,14 +75,14 @@ export class openaiif {
         );
         return response;
     }
-    public async reqeustUsingLangChainPlain(message: string): Promise<BaseChatMessage> {
+    public async reqeustUsingLangChainPlain(message: string): Promise<BaseMessage> {
         if (message.match(/#.+\n/)) {
-            const messageArray : Array<string> = message.split('#');
-            if (0 == messageArray[0].trim().length && 4 < messageArray.length ) {
-                var array: Array<BaseChatMessage> = [new SystemChatMessage(`${messageArray[1].trim()}\n${messageArray[2].trim()}\nそして、あなたはアシスタントは役に立ち、クリエイティブで、賢く、非常にフレンドリーです。`), new HumanChatMessage(messageArray[3])];
+            const messageArray: Array<string> = message.split('#');
+            if (0 == messageArray[0].trim().length && 4 < messageArray.length) {
+                var array: Array<BaseMessage> = [new SystemMessage(`${messageArray[1].trim()}\n${messageArray[2].trim()}\nそして、あなたはアシスタントは役に立ち、クリエイティブで、賢く、非常にフレンドリーです。`), new HumanMessage(messageArray[3])];
                 var ret = await this.chat.call(array);
                 return ret;
-            }else{
+            } else {
                 return await this.reqeustUsingLangChain(message);
             }
         } else {
@@ -89,38 +93,39 @@ export class openaiif {
     public async reqeustUsingLangChainSQL(message: string): Promise<ChainValues> {
         const datasource = new DataSource({
             type: "mssql",
-            host : process.env.MS_SQL_HOST,
-            port : Number(process.env.MS_SQL_PORT),
-            username : process.env.MS_SQL_USERNAME,
-            password : process.env.MS_SQL_PASSWORD,
-            database : process.env.MS_SQL_DATABASE
-          });
+            host: process.env.MS_SQL_HOST,
+            port: Number(process.env.MS_SQL_PORT),
+            username: process.env.MS_SQL_USERNAME,
+            password: process.env.MS_SQL_PASSWORD,
+            database: process.env.MS_SQL_DATABASE
+        });
 
-          const db = await SqlDatabase.fromDataSourceParams({
+        const db = await SqlDatabase.fromDataSourceParams({
             appDataSource: datasource,
             includesTables: process.env.MS_SQL_INCLUDE_TABLE.split(',')
             //ignoreTables: ['database_firewall_rules']
-          });
+        });
 
-          const chain = new SqlDatabaseChain({
+        const chain = new SqlDatabaseChain({
             llm: new OpenAI({
                 temperature: 0.9,
                 azureOpenAIApiKey: process.env.AZURE_OPENAI_API_KEY,
                 azureOpenAIApiInstanceName: process.env.AZURE_OPENAI_API_INSTANCE_NAME,
                 azureOpenAIApiDeploymentName: process.env.AZURE_OPENAI_API_DEPLOYMENT_NAME,
                 azureOpenAIApiVersion: process.env.AZURE_OPENAI_API_VERSION,
-                modelName : process.env.AZURE_OPENAI_API_MODEL_NAME}),
+                modelName: process.env.AZURE_OPENAI_API_MODEL_NAME
+            }),
             database: db,
-            verbose : true
-          });
-          
-          const res = await chain.call({ query: message });
-          /* Expected result:
-           * {
-           *   result: ' There are 3503 tracks.',
-           *   sql: ' SELECT COUNT(*) FROM "Track";'
-           * }
-           */
-          return res;
+            verbose: true
+        });
+
+        const res = await chain.call({ query: message });
+        /* Expected result:
+         * {
+         *   result: ' There are 3503 tracks.',
+         *   sql: ' SELECT COUNT(*) FROM "Track";'
+         * }
+         */
+        return res;
     }
 }
