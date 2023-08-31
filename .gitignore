@@ -61,3 +61,4 @@ yarn.lock
 yarn-error.log
 deploy.ps1
 test.http
+.yarnrc.yml

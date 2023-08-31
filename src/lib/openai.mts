@@ -9,7 +9,7 @@ import { LLMChain } from "langchain/chains";
 import { DataSource } from "typeorm";
 import { OpenAI } from "langchain/llms/openai";
 import { SqlDatabase } from "langchain/sql_db";
-import { SqlDatabaseChain } from "langchain/chains";
+import { SqlDatabaseChain } from "langchain/chains/sql_db"
 import { ChainValues } from "langchain/schema"
 
 export class openaiif {
@@ -108,7 +108,8 @@ export class openaiif {
                 azureOpenAIApiKey: process.env.AZURE_OPENAI_API_KEY,
                 azureOpenAIApiInstanceName: process.env.AZURE_OPENAI_API_INSTANCE_NAME,
                 azureOpenAIApiDeploymentName: process.env.AZURE_OPENAI_API_DEPLOYMENT_NAME,
-                azureOpenAIApiVersion: process.env.AZURE_OPENAI_API_VERSION}),
+                azureOpenAIApiVersion: process.env.AZURE_OPENAI_API_VERSION,
+                modelName : process.env.AZURE_OPENAI_API_MODEL_NAME}),
             database: db,
             verbose : true
           });
