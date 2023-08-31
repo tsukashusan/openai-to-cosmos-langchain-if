@@ -26,6 +26,7 @@ $MS_SQL_PASSWORD="<MS_SQL_PASSWORD>"
 $MS_SQL_DATABASE="<MS_SQL_DATABASE>"
 $MS_SQL_INCLUDE_TABLE="仕入先,運送会社,社員,受注,受注明細,商品,商品区分,都道府県,得意先"
 $MAX_TOKEN=16384
+$cosmosDB__accountEndpoint = "<cosmosDB__accountEndpoint>"
 
 az webapp config appsettings set --resource-group $resourceGroupName --name $functionName --settings AZURE_OPENAI_API_KEY=$AZURE_OPENAI_API_KEY
 az webapp config appsettings set --resource-group $resourceGroupName --name $functionName --settings AZURE_OPENAI_API_INSTANCE_NAME=$AZURE_OPENAI_API_INSTANCE_NAME
@@ -40,7 +41,7 @@ az webapp config appsettings set --resource-group $resourceGroupName --name $fun
 az webapp config appsettings set --resource-group $resourceGroupName --name $functionName --settings ENABLE_ORYX_BUILD=$true
 az webapp config appsettings set --resource-group $resourceGroupName --name $functionName --settings COSMOS_DATABASE_NAME=$COSMOS_DATABASE_NAME
 az webapp config appsettings set --resource-group $resourceGroupName --name $functionName --settings COSMOS_COLLECTIONS_NAME=$COSMOS_COLLECTIONS_NAME
-az webapp config appsettings set --resource-group $resourceGroupName --name $functionName --settings cosmosDB__accountEndpoint="https://pwylkxjc624ug-cosmos-nosql.documents.azure.com:443/"
+az webapp config appsettings set --resource-group $resourceGroupName --name $functionName --settings cosmosDB__accountEndpoint=$cosmosDB__accountEndpoint
 az webapp config appsettings set --resource-group $resourceGroupName --name $functionName --settings cosmosDB__credential="managedidentity"
 az webapp config appsettings set --resource-group $resourceGroupName --name $functionName --settings AzureWebJobsFeatureFlags="EnableWorkerIndexing"
 az webapp config appsettings set --resource-group $resourceGroupName --name $functionName --settings WEBSITE_RUN_FROM_PACKAGE="0"
@@ -67,3 +68,18 @@ az webapp config appsettings set --resource-group $resourceGroupName --name $fun
 
 #az functionapp deployment source config-zip --resource-group $resourceGroupName --name $functionName --src ..\openai-to-cosmos-langchain-if.zip --build-remote true --verbose
 func azure functionapp publish $functionName
+$startTime = (Get-Date).datetime
+Write-Output "開始時間:${startTime}"
+do {
+    $ret = az functionapp function list -g $resourceGroupName -n $functionName
+    if ($ret.length -gt 0 )
+    {
+        foreach ($item in $ret) {
+            Write-Output "${item}"
+        }
+        
+    }
+}
+while ($ret.length -le 0 )
+$endTime = (Get-Date).datetime
+Write-Output "終了時間:${endTime}"
