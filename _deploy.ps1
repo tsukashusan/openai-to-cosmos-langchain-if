@@ -9,7 +9,6 @@ $principalId4AppServiceLinuxFunctions='<principalId4AppServiceLinux>'
 az login --tenant $tenantId
 
 az account set --subscription $subscriptionId --verbose
-
 az cosmosdb sql role assignment create --account-name $cosmosDBAccountName --resource-group $resourceGroupName --scope "/" --principal-id $principalId4AppServiceLinuxFunctions --role-definition-id $readOnlyRoleDefinitionId
 
 $settingsKV = @{
