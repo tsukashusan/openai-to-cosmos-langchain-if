@@ -37,7 +37,7 @@ export class openaiif {
             prefix: 'あなたはアシスタントは役に立ち、クリエイティブで、賢く、非常にフレンドリー、そして、以下のツールを利用することができます。',
             suffix: `開始!ここからの会話は全て日本語で行われる。沢山の"Args"を使いましょう。`,
         });
-        this.chatPromptTemplate = ChatPromptTemplate.fromPromptMessages([
+        this.chatPromptTemplate = ChatPromptTemplate.fromMessages([
             new SystemMessagePromptTemplate(this.prompt),
             HumanMessagePromptTemplate.fromTemplate(`{input}
             これはあなたの以前の回答です。（でも私は一切見ていません！あなたが最終回答として返すものしか見ていません）
