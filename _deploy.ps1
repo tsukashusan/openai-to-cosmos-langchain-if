@@ -27,7 +27,11 @@ $settingsKV = @{
     "MS_SQL_DATABASE"="<MS_SQL_DATABASE>"
     "MS_SQL_INCLUDE_TABLE"="仕入先,運送会社,社員,受注,受注明細,商品,商品区分,都道府県,得意先"
     "MAX_TOKEN"=16384
-    "cosmosDB__accountEndpoint "= "<cosmosDB__accountEndpoint>"    
+    "cosmosDB__accountEndpoint" = "<cosmosDB__accountEndpoint>"
+    "cosmosDB__credential" = "managedidentity"
+    "AzureWebJobsFeatureFlags" = "EnableWorkerIndexing"
+    "ENABLE_ORYX_BUILD" = "True"
+    "SCM_DO_BUILD_DURING_DEPLOYMENT" = "True"
 }
 $settingsKV|ConvertTo-Json -Compress|Out-File -FilePath .\setting.json
 az webapp config appsettings set --resource-group $resourceGroupName --name $functionName --settings "@setting.json"
